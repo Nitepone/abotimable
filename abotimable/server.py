@@ -1,6 +1,10 @@
-import configparser, sqlite3
+import configparser, sqlite3, pystache, logging
 from flask import Flask, request
 from slackclient import SlackClient
+
+# read in the template
+with open('templates/index.mustache') as fh:
+    index_template = fh.read()
 
 app = Flask(__name__)
 
@@ -14,10 +18,11 @@ oauth_redirect = "http://localhost:5000/callback"
 
 @app.route("/", methods=["GET"])
 def pre_install():
-  return '''
-      <a href="https://slack.com/oauth/authorize?redirect_uri={}&scope={}&client_id={}">
-          <img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
-'''.format(oauth_redirect, oauth_scope, client_id)
+    return pystache.render(index_template, {
+        "oauth_redirect": oauth_redirect,
+        "oauth_scope": oauth_scope,
+        "client_id": client_id
+    })
 
 @app.route("/callback", methods=["GET", "POST"])
 def post_install():
