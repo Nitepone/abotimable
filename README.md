@@ -31,6 +31,19 @@ You can now enter the created virtual environment.
 python3 -m pipenv shell
 ```
 
+## Server
+
+*All commands in this section should be run in the root directory of this
+project*
+
+Once you are inside of the `pipenv` virtual environment, you can proceed.
+
+```bash
+FLASK_APP=abotimable/server.py flask run
+```
+
+*This will likely change in the future*
+
 ## Contributing
 
 In general, this project follows guidelines set forward by
