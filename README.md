@@ -40,3 +40,8 @@ In general, this project follows guidelines set forward by
 For Git, we will be following the
 [Git Workflow](https://nvie.com/posts/a-successful-git-branching-model/)
 set forth by Vincent Driessen on NVIE.
+
+For docstrings, we will be using
+[reStructuredText](https://en.wikipedia.org/wiki/ReStructuredText), as
+specified by [PEP287](https://www.python.org/dev/peps/pep-0287/) and used by
+[Sphinx](https://github.com/sphinx-doc/sphinx).
