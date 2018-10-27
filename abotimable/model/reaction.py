@@ -1,0 +1,11 @@
+"""
+A dataclass to represent a reaction
+"""
+
+class Reaction:
+    user: str # The UID of the user making the reaction
+    reaction: str # The reaction by its string name
+    item_user: str # The ID of the user being reacted to
+    item: Message # The message that is being reacted to
+    # Take note, the above line could be a file, and not a message
+    event_ts: str # The time the reaction was made
