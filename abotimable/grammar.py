@@ -1,5 +1,5 @@
 """
-FILE: grammer.py
+FILE: grammar.py
 PROJECT: abotimable
 
 In an effort to make a very annoying slack bot, why not
@@ -11,9 +11,12 @@ don't worry about it. He's making the world a better place.
 @version 1.0
 
 """
+import random, logging
+from slackclient import SlackClient
+from .teamBotModule import TeamBotModule
+from .model.message import Message
 
-import random
-
+logger = logging.getLogger(__name__)
 
 grammar_errors = {
     "you're": "your",
@@ -49,6 +52,27 @@ def correctgrammar(word):
     return "Just a heads up, " + word + \
            " should actually be " + corrected
 
+
+class GrammarModule:
+
+    def notify_message(self, slack_client: SlackClient,
+            message: Message) -> None:
+        incoming = message.text
+        word = containscommonissue(incoming)
+        rand = random.randint(1, 10)
+        if word is not None and rand <= 3:
+            outgoing = correctgrammar(word)
+            message_response = slack_client.api_call(
+                "chat.postMessage",
+                channel = message.channel,
+                text = outgoing
+            )
+            logger.info("Grammar module sent message: {}".format(outgoing))
+            logger.info("Reponse: {}".format(message_response))
+        else:
+            logger.warn("Grammar module is skipping post")
+
+TeamBotModule.register(GrammarModule)
 
 if __name__ == '__main__':
     incoming = "Hey man, you're gonna be late!"
