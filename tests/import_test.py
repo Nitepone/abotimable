@@ -16,6 +16,7 @@ import abotimable.testmodule
 import abotimable.remindMention
 import abotimable.ricFlair
 import abotimable.grammar
+import abotimable.emotionmodule
 
 logging.info("Importing other modules...")
 # import abotimable.server
