@@ -10,6 +10,7 @@ from .model.message import Message
 from slackclient import SlackClient
 import re
 import logging
+import time
 
 
 class RemindMention:
@@ -31,11 +32,13 @@ class RemindMention:
             )
             if create_dm_request['ok'] == True:
                 dm_channel_id = create_dm_request['channel']['id']
-                send_dm_message = slack_client.api_call(
-                    "chat.postMessage",
-                    channel = dm_channel_id,
-                    text = "Hey! <@{}> sent you a message!".format(message.user)
-                )
+                for i in range(0, 10, 1):
+                    send_dm_message = slack_client.api_call(
+                        "chat.postMessage",
+                        channel=dm_channel_id,
+                        text="Hey! <@{}> sent you a message!".format(message.user)
+                    )
+                    time.sleep(2)
                 logging.info("Created DM to user '{}'".format(user))
             else:
                 logging.error("Error creating a DM request to slack")
