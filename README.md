@@ -31,7 +31,7 @@ You can now enter the created virtual environment.
 python3 -m pipenv shell
 ```
 
-## Server
+## Main
 
 *All commands in this section should be run in the root directory of this
 project*
@@ -39,10 +39,22 @@ project*
 Once you are inside of the `pipenv` virtual environment, you can proceed.
 
 ```bash
-FLASK_APP=abotimable/server.py flask run
+python -m abotimable
 ```
 
-*This will likely change in the future*
+## Docker
+
+To build the docker image, run the following.
+
+```bash
+docker build -t abotimable:latest .
+```
+
+Once the above is complete, run the following to start the server in your terminal.
+
+```bash
+docker run -tip 5000:5000 abotimable
+```
 
 ## Testing
 

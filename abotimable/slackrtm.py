@@ -1,6 +1,8 @@
 import time
 import logging
+import coloredlogs
 import json
+import threading
 from slackclient import SlackClient
 from abotimable.model import bot as bot_model
 from abotimable.model.message import Message
@@ -11,7 +13,8 @@ from abotimable.grammar import GrammarModule
 from abotimable.emotionmodule import EmotionModule
 from abotimable.superiorOS import SuperiorOSModule
 
-logging.basicConfig(level=logging.DEBUG)
+coloredlogs.install(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 item_types = {
     "message": Message,
@@ -44,7 +47,7 @@ def main():
                 assert isinstance(item_list, list)
 
                 for item_dict in item_list:
-                    logging.debug(item_dict)
+                    logger.debug(item_dict)
                     assert isinstance(item_dict, dict)
 
                     item_type = item_dict["type"]
@@ -60,11 +63,16 @@ def main():
                         item_dict['channel'] = channel
                     item = item_types[item_type].from_json(json.dumps(item_dict))
                     for observer in team_bot_modules:
-                        observer.notify_message(sc, item)
+                        t = threading.Thread(
+                            target=observer.notify_message,
+                            args=(sc, item),
+                            daemon=True
+                        )
+                        t.start()
 
                 time.sleep(1)
         else:
-            logging.error("Connection Failed")
+            logger.error("Connection Failed")
 
 if __name__ == "__main__":
     main()

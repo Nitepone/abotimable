@@ -1,18 +1,18 @@
-from abotimable.model import bot as bot_model
 import configparser
 import sqlite3
 import pystache
 import logging
-from flask import Flask, request
+from flask import request
 from slackclient import SlackClient
+
+from abotimable import app
+from abotimable.model import bot as bot_model
 
 logging.basicConfig(level=logging.DEBUG)
 
 # read in the template
 with open('templates/index.mustache') as fh:
     index_template = fh.read()
-
-app = Flask(__name__)
 
 config = configparser.RawConfigParser()
 config.read('config.ini')
@@ -67,3 +67,6 @@ def post_install():
 
     # return something
     return "Success!"
+
+if __name__ == "__main__":
+    run()

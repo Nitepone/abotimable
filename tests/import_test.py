@@ -21,7 +21,7 @@ import abotimable.songLyrics
 import abotimable.superiorOS
 
 logging.info("Importing other modules...")
-# import abotimable.server
+import abotimable.server
 import abotimable.slackrtm
 
 logging.info("Done imports.")
