@@ -6,7 +6,7 @@
     Description: Anytime "woo" is mentioned in chat, abotimable will post a ric flair picture
 """
 import re
-from ..teamBotModule import TeamBotModule
+from .teamBotModule import TeamBotModule
 
 
 class RicFlair():
@@ -22,7 +22,7 @@ class RicFlair():
         else:
             return
 
-    def notify_message(self, team_rtm, message):
+    def notify_message(self, slack_client, message):
         self.check_for_woo(message)
 
 

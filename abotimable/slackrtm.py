@@ -6,6 +6,7 @@ from abotimable.model import bot as bot_model
 from abotimable.model.message import Message
 from abotimable.model.reaction import Reaction
 from abotimable.testmodule import TestModule
+from abotimable.remindMention import RemindMention
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -15,7 +16,8 @@ item_types = {
 }
 
 team_bot_modules = [
-    TestModule()
+    TestModule(),
+    RemindMention(),
 ]
 
 def main():
@@ -42,6 +44,10 @@ def main():
                     item_type = item_dict["type"]
                     if item_type not in item_types:
                         continue
+                    # skip bot messages
+                    if item_dict.get('subtype', None) == 'bot_message':
+                        continue
+                    # unpack message edits
                     while item_dict.get('subtype', None) == "message_changed":
                         channel = item_dict['channel']
                         item_dict = item_dict['message']

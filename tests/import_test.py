@@ -9,13 +9,15 @@ import abotimable.model.channelEvents
 import abotimable.model.channelHistoryChange
 import abotimable.model.presenseChange
 import abotimable.model.reaction
-import abotimable.model.remindMention
-import abotimable.model.ricFlair
 
-logging.info("Importing scripts...")
-# import abotimable.server
-import abotimable.slackrtm
+logging.info("Importing team bot modules...")
 import abotimable.teamBotModule
 import abotimable.testmodule
+import abotimable.remindMention
+import abotimable.ricFlair
+
+logging.info("Importing other modules...")
+# import abotimable.server
+import abotimable.slackrtm
 
 logging.info("Done imports.")
