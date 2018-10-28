@@ -32,17 +32,19 @@ class EmotionModule():
             {'text':inputText},
             'application/json'
         ).get_result()
-        first_tone = tone_analysis["document_tone"]["tones"][0]
-        return first_tone
+
+        alltones = []
+        for tone in tone_analysis["document_tone"]["tones"]:
+            alltones.append(tone["tone_id"])
+        return alltones
 
     def notify_message(self, sc, message):
-        try:
-            tone = self.query(message.text)
-        except Exception as e:
-            logger.error(e)
+        tones = self.query(message.text)
+        # catch no tones
+        if len(tones) == 0:
             return
 
-        if tone["tone_id"] == "sadness":
+        if "sadness" in tones:
             sc.api_call(
                 "reactions.add",
                 channel=message.channel,
@@ -50,8 +52,32 @@ class EmotionModule():
                 timestamp=message.ts
             )
             logger.info("Tone was sad, message sent")
+        elif "anger" in tones:
+            sc.api_call(
+                "reactions.add",
+                channel=message.channel,
+                name="baby_bottle",
+                timestamp=message.ts
+            )
+            logger.info("Tone was angry, message sent")
+        elif "joy" in tones:
+            sc.api_call(
+                "reactions.add",
+                channel=message.channel,
+                name="thumbsdown",
+                timestamp=message.ts
+            )
+            logger.info("Tone was joyful, message sent")
+        elif "confident" in tones:
+            sc.api_call(
+                "reactions.add",
+                channel=message.channel,
+                name="thinking_face",
+                timestamp=message.ts
+            )
+            logger.info("Tone was confident, message sent")
         else:
-            logger.info("Tone was {}, not sad.".format(tone))
+            logger.info("Tone was {}, no reply.".format(tone))
 
 
 TeamBotModule.register(EmotionModule)
