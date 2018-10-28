@@ -19,27 +19,26 @@ class TeamBotModule(ABC):
     Notifies about a message in a channel
     '''
     @abstractmethod
-    def notifyMessage(self, teamRTM, message):
+    def notify_message(self, team_rtm, message):
         return
 
     '''
     Notifies that a reaction was added to a message
     '''
     @abstractmethod
-    def notifyReaction(self, teamRTM, reaction):
+    def notify_reaction(self, team_rtm, reaction):
         return
 
     '''
     Notifies channel history was changed
     '''
     @abstractmethod
-    def notifyChannelHistoryChange(self, teamRTM, channelHistoryChange):
+    def notify_channel_history_change(self, team_rtm, channel_history_change):
         return
 
     '''
     Notifies on presence change of a user
     '''
     @abstractmethod
-    def notifyPresenceChange(self, teamRTM, presenceChange):
+    def notify_presence_change(self, team_rtm, presence_change):
         return
-

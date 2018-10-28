@@ -11,7 +11,12 @@ logging.basicConfig(level=logging.DEBUG)
 
 # create a new bot
 logging.info("Creating a new bot")
-b = BotModel.Bot(team_name="abcde", team_id="teamid", token="mytoken")
+b = BotModel.Bot(
+    team_name="abcde",
+    team_id="teamid",
+    bot_access_token="mytoken",
+    bot_user_id="mybotuserid"
+)
 b.save()
 
 # ensure that the bot is in the database
