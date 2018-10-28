@@ -1,8 +1,13 @@
 #!/usr/bin/env false
-if __name__ == "__main__": raise SystemExit("Do not execute this script.")
 
-import sqlite3, logging
+import sqlite3
+import logging
 from dataclasses import dataclass
+
+
+if __name__ == "__main__":
+    raise SystemExit("Do not execute this script.")
+
 
 def ensure_table_exists():
     conn = sqlite3.connect('sqlite3.db')
@@ -14,9 +19,10 @@ def ensure_table_exists():
         "team_name VARCHAR(255) NOT NULL UNIQUE,"
         "team_id VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE"
         ");"
-    );
+    )
     conn.commit()
     conn.close()
+
 
 @dataclass
 class Bot:
@@ -42,6 +48,7 @@ class Bot:
             logging.error(e);
         conn.commit()
         conn.close()
+
 
 def get_bots():
     """

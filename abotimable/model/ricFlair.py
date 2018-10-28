@@ -9,7 +9,7 @@ import re
 from ..teamBotModule import TeamBotModule
 
 
-class ricFlair():
+class RicFlair():
 
     def __init__(self):
         pass
@@ -22,8 +22,8 @@ class ricFlair():
         else:
             return
 
-    def notify_message(self, teamRTM, message):
+    def notify_message(self, team_rtm, message):
         self.check_for_woo(message)
 
 
-TeamBotModule.register(ricFlair)
+TeamBotModule.register(RicFlair)

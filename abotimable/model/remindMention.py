@@ -7,7 +7,8 @@
 """
 from ..teamBotModule import TeamBotModule
 
-class remindMention():
+
+class RemindMention():
 
     def __init__(self):
         pass
@@ -18,11 +19,11 @@ class remindMention():
         else:
             return False
 
-
     def process_payload(payload):
         return
 
-    def notifyMessage(self, teamRTM, message):
+    def notify_message(self, team_rtm, message):
         pass
 
-TeamBotModule.register(remindMention)
+
+TeamBotModule.register(RemindMention)

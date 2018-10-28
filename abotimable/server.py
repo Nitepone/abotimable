@@ -1,5 +1,8 @@
-from abotimable.model import bot as BotModel
-import configparser, sqlite3, pystache, logging
+from abotimable.model import bot as bot_model
+import configparser
+import sqlite3
+import pystache
+import logging
 from flask import Flask, request
 from slackclient import SlackClient
 
@@ -19,6 +22,7 @@ client_secret = config['SLACK']['CLIENT_SECRET']
 oauth_scope = config['SLACK']['OAUTH_SCOPE']
 oauth_redirect = "http://localhost:5000/callback"
 
+
 @app.route("/", methods=["GET"])
 def pre_install():
     return pystache.render(index_template, {
@@ -26,6 +30,7 @@ def pre_install():
         "oauth_scope": oauth_scope,
         "client_id": client_id
     })
+
 
 @app.route("/callback", methods=["GET", "POST"])
 def post_install():
@@ -52,7 +57,7 @@ def post_install():
     assert 'bot' in auth_response, \
         "You may need to add bot permissions to your app"
 
-    b = BotModel.Bot(
+    b = bot_model.Bot(
         bot_user_id=auth_response['bot']['bot_user_id'],
         bot_access_token=auth_response['bot']['bot_access_token'],
         team_name=auth_response['team_name'],
