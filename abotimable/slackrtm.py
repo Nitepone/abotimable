@@ -12,6 +12,7 @@ from abotimable.remindMention import RemindMention
 from abotimable.grammar import GrammarModule
 from abotimable.emotionmodule import EmotionModule
 from abotimable.superiorOS import SuperiorOSModule
+from abotimable.greeter import GreeterModule
 
 coloredlogs.install(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -26,7 +27,8 @@ team_bot_modules = [
     RemindMention(),
     GrammarModule(),
     EmotionModule(),
-    SuperiorOSModule()
+    SuperiorOSModule(),
+    GreeterModule()
 ]
 
 def main():
