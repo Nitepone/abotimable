@@ -9,6 +9,7 @@ dataclasses-json = "*"
 flask = "*"
 pystache = "*"
 watson-developer-cloud = "*"
+lyricsgenius = "*"
 
 [dev-packages]
 

@@ -11,7 +11,8 @@ don't worry about it. He's making the world a better place.
 @version 1.0
 
 """
-import random, logging
+import logging
+import random
 from slackclient import SlackClient
 from .teamBotModule import TeamBotModule
 from .model.message import Message
