@@ -16,10 +16,15 @@ Mistakes happen. Don't worry about it.
 @version 1.0
 
 """
-
+import logging
 import random
 import configparser
 import lyricsgenius as genius
+from slackclient import SlackClient
+from .teamBotModule import TeamBotModule
+from .model.message import Message
+
+logger = logging.getLogger(__name__)
 
 config = configparser.RawConfigParser()
 config.read('config.ini')
@@ -48,6 +53,17 @@ def song_lookup(artist, song):
         for s in a.songs:
             if s.title != song:
                 return s
+
+class SongLyricsModule:
+
+    def notify_message(self, slack_client: SlackClient,
+            message: Message) -> None:
+        song = song_lookup("", message.text)
+        message_response = slack_client.api_call(
+            "chat.postMessage",
+            channel = message.channel,
+            text = song
+        )
 
 
 if __name__ == '__main__':
