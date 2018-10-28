@@ -2,9 +2,9 @@
 A class to represent a simple server message
 """
 from dataclasses import dataclass
-from dataclasses_json import dataclasses_json
+from dataclasses_json import dataclass_json
 
-@dataclasses_json
+@dataclass_json
 @dataclass
 class Message:
     channel: str # The channel the message is in

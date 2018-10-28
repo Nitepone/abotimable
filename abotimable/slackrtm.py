@@ -1,6 +1,9 @@
-import time, logging
+import time, logging, json
 from slackclient import SlackClient
 from abotimable.model import bot as BotModel
+from abotimable.model.message import Message
+from abotimable.model.reaction import Reaction
+from abotimable.testmodule import TestModule
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -10,6 +13,7 @@ item_types = {
 }
 
 team_bot_modules = [
+    TestModule()
 ]
 
 for bot in BotModel.get_bots():
@@ -25,14 +29,19 @@ for bot in BotModel.get_bots():
     # here's where we do the stuff
     if sc.rtm_connect(with_team_state=False):
         while True:
-            item_dict = sc.rtm_read()
-            logging.debug(item_dict)
-            assert isinstance(item_dict, dict)
+            item_list = sc.rtm_read()
+            assert isinstance(item_list, list)
 
-            item_type = item["type"]
-            item = item_types[item_type].from_json(item_dict)
-            for observer in team_bot_modules:
-                observer.notifyMessage(sc, item)
+            for item_dict in item_list:
+                logging.debug(item_dict)
+                assert isinstance(item_dict, dict)
+
+                item_type = item_dict["type"]
+                if item_type not in item_types:
+                    continue
+                item = item_types[item_type].from_json(json.dumps(item_dict))
+                for observer in team_bot_modules:
+                    observer.notifyMessage(sc, item)
 
             time.sleep(1)
     else:
