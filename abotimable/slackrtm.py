@@ -1,6 +1,8 @@
-import time, logging, json
+import time
+import logging
+import json
 from slackclient import SlackClient
-from abotimable.model import bot as BotModel
+from abotimable.model import bot as bot_model
 from abotimable.model.message import Message
 from abotimable.model.reaction import Reaction
 from abotimable.testmodule import TestModule
@@ -16,7 +18,7 @@ team_bot_modules = [
     TestModule()
 ]
 
-for bot in BotModel.get_bots():
+for bot in bot_model.get_bots():
     sc = SlackClient(bot.bot_access_token)
 
     # notify general that the bot is online
@@ -41,7 +43,7 @@ for bot in BotModel.get_bots():
                     continue
                 item = item_types[item_type].from_json(json.dumps(item_dict))
                 for observer in team_bot_modules:
-                    observer.notifyMessage(sc, item)
+                    observer.notify_message(sc, item)
 
             time.sleep(1)
     else:
