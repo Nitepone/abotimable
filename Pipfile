@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+slackclient = "*"
+dataclasses-json = "*"
+flask = "*"
+pystache = "*"
+watson-developer-cloud = "*"
+lyricsgenius = "*"
+coloredlogs = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3"
