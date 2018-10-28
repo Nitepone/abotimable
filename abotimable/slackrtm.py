@@ -2,6 +2,7 @@ import time
 import logging
 import coloredlogs
 import json
+import threading
 from slackclient import SlackClient
 from abotimable.model import bot as bot_model
 from abotimable.model.message import Message
@@ -62,7 +63,12 @@ def main():
                         item_dict['channel'] = channel
                     item = item_types[item_type].from_json(json.dumps(item_dict))
                     for observer in team_bot_modules:
-                        observer.notify_message(sc, item)
+                        t = threading.Thread(
+                            target=observer.notify_message,
+                            args=(sc, item),
+                            daemon=True
+                        )
+                        t.start()
 
                 time.sleep(1)
         else:
