@@ -1,6 +1,9 @@
+from abotimable.model import bot as BotModel
 import configparser, sqlite3, pystache, logging
 from flask import Flask, request
 from slackclient import SlackClient
+
+logging.basicConfig(level=logging.DEBUG)
 
 # read in the template
 with open('templates/index.mustache') as fh:
@@ -27,26 +30,32 @@ def pre_install():
 @app.route("/callback", methods=["GET", "POST"])
 def post_install():
 
-  # Retrieve the auth code from the request params
-  auth_code = request.args['code']
+    # Retrieve the auth code from the request params
+    auth_code = request.args['code']
 
-  # An empty string is a valid token for this request
-  sc = SlackClient("")
+    # An empty string is a valid token for this request
+    sc = SlackClient("")
 
-  # Request the auth tokens from Slack
-  auth_response = sc.api_call(
-    "oauth.access",
-    client_id=client_id,
-    client_secret=client_secret,
-    redirect_url=oauth_redirect,
-    code=auth_code
-  )
+    # Request the auth tokens from Slack
+    auth_response = sc.api_call(
+      "oauth.access",
+      client_id=client_id,
+      client_secret=client_secret,
+      redirect_url=oauth_redirect,
+      code=auth_code
+    )
 
-  logging.debug(auth_response)
+    logging.debug(auth_response)
 
-  assert isinstance(auth_response, dict)
-  assert auth_response['ok'] == True
-  access_token = auth_response['access_token']
+    assert isinstance(auth_response, dict)
+    assert auth_response['ok'] == True
 
-  # return something
-  return "Success!"
+    b = BotModel.Bot(
+        team_name=auth_response['team_name'],
+        team_id=auth_response['team_id'],
+        token=auth_response['access_token']
+    )
+    b.save()
+
+    # return something
+    return "Success!"
