@@ -29,6 +29,3 @@ class teamBotModule(ABC):
     @abstractmethod
     def notify(teamRTM, reaction):
         return
-
-
-
