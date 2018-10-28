@@ -8,6 +8,7 @@ from abotimable.model.reaction import Reaction
 from abotimable.testmodule import TestModule
 from abotimable.remindMention import RemindMention
 from abotimable.grammar import GrammarModule
+from abotimable.emotionmodule import EmotionModule
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -20,6 +21,7 @@ team_bot_modules = [
     TestModule(),
     RemindMention(),
     GrammarModule(),
+    EmotionModule()
 ]
 
 def main():

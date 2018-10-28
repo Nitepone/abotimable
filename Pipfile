@@ -8,6 +8,7 @@ slackclient = "*"
 dataclasses-json = "*"
 flask = "*"
 pystache = "*"
+watson-developer-cloud = "*"
 
 [dev-packages]
 
