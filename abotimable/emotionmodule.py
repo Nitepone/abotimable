@@ -62,10 +62,11 @@ class EmotionModule():
             logger.info("Tone was angry, message sent")
         elif "joy" in tones:
             sc.api_call(
-                "reactions.add",
-                channel=message.channel,
-                name="thumbsdown",
-                timestamp=message.ts
+                "chat.postMessage",
+                channel = message.channel,
+                text = "Have you considered that noone here cares? Like" \
+                " seriously, this is a work group. How about you stop being" \
+                " annoying and get some more work done."
             )
             logger.info("Tone was joyful, message sent")
         elif "confident" in tones:
