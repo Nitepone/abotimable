@@ -1,7 +1,11 @@
 """
 A dataclass to represent a reaction
 """
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json
 
+@dataclass_json
+@dataclass
 class Reaction:
     user: str # The UID of the user making the reaction
     reaction: str # The reaction by its string name
