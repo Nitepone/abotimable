@@ -20,7 +20,7 @@ config.read('config.ini')
 client_id = config['SLACK']['CLIENT_ID']
 client_secret = config['SLACK']['CLIENT_SECRET']
 oauth_scope = config['SLACK']['OAUTH_SCOPE']
-oauth_redirect = "http://localhost:5000/callback"
+oauth_redirect = config['SLACK']['OAUTH_REDIRECT']
 
 
 @app.route("/", methods=["GET"])
