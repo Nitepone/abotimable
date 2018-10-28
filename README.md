@@ -51,7 +51,8 @@ Tests are located in the `tests` directory.
 Once you are inside of the `pipenv` virtual environment, you can proceed.
 
 ```bash
-python3.7 -m tests.bots_test
+# run all tests
+python -m tests
 ```
 
 ## Contributing

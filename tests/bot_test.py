@@ -4,7 +4,7 @@ Test creation and query of bots from database
 .. note:: must be run on a new database
     consider running `rm sqlite3.db` before running this
 """
-import logging
+import logging, sqlite3
 from abotimable.model import bot as BotModel
 
 logging.basicConfig(level=logging.DEBUG)
@@ -26,3 +26,16 @@ try:
     logging.info("Found bot successfully")
 except sqlite3.OperationalError as e:
     logging.error(e)
+
+# now delete the bot
+logging.info("Deleting the bot...")
+b.delete()
+
+# ensure the bot is gone
+logging.info("Asserting that the bot was deleted...")
+try:
+    next(filter(lambda b: b.team_name == "abcde", BotModel.get_bots()))
+    logging.error("Bot was not deleted.")
+except StopIteration:
+    logging.info("Bot successfully deleted")
+

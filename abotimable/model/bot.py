@@ -49,6 +49,15 @@ class Bot:
         conn.commit()
         conn.close()
 
+    def delete(self) -> None:
+        """
+        Delete this bot from the database (if it exists)
+        """
+        conn = sqlite3.connect('sqlite3.db')
+        c = conn.cursor()
+        c.execute("DELETE FROM bot WHERE bot.bot_user_id = '{}';".format(self.bot_user_id))
+        conn.commit()
+        conn.close()
 
 def get_bots():
     """
