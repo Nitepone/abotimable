@@ -19,7 +19,7 @@ class TeamBotModule(ABC):
     Notifies about a message in a channel
     '''
     @abstractmethod
-    def notify_message(self, team_rtm, message):
+    def notify_message(self, slack_client, message):
         return
 
     '''
