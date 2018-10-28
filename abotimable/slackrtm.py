@@ -6,6 +6,9 @@ from abotimable.model import bot as bot_model
 from abotimable.model.message import Message
 from abotimable.model.reaction import Reaction
 from abotimable.testmodule import TestModule
+from abotimable.remindMention import RemindMention
+from abotimable.grammar import GrammarModule
+from abotimable.emotionmodule import EmotionModule
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -15,36 +18,51 @@ item_types = {
 }
 
 team_bot_modules = [
-    TestModule()
+    TestModule(),
+    RemindMention(),
+    GrammarModule(),
+    EmotionModule()
 ]
 
-for bot in bot_model.get_bots():
-    sc = SlackClient(bot.bot_access_token)
+def main():
+    for bot in bot_model.get_bots():
+        sc = SlackClient(bot.bot_access_token)
 
-    # notify general that the bot is online
-    sc.api_call(
-      "chat.postMessage",
-      channel="general",
-      text="Your favorite bot is back online. :tada:"
-    )
+        # notify general that the bot is online
+        sc.api_call(
+          "chat.postMessage",
+          channel="general",
+          text="Your favorite bot is back online. :tada:"
+        )
 
-    # here's where we do the stuff
-    if sc.rtm_connect(with_team_state=False):
-        while True:
-            item_list = sc.rtm_read()
-            assert isinstance(item_list, list)
+        # here's where we do the stuff
+        if sc.rtm_connect(with_team_state=False):
+            while True:
+                item_list = sc.rtm_read()
+                assert isinstance(item_list, list)
 
-            for item_dict in item_list:
-                logging.debug(item_dict)
-                assert isinstance(item_dict, dict)
+                for item_dict in item_list:
+                    logging.debug(item_dict)
+                    assert isinstance(item_dict, dict)
 
-                item_type = item_dict["type"]
-                if item_type not in item_types:
-                    continue
-                item = item_types[item_type].from_json(json.dumps(item_dict))
-                for observer in team_bot_modules:
-                    observer.notify_message(sc, item)
+                    item_type = item_dict["type"]
+                    if item_type not in item_types:
+                        continue
+                    # skip bot messages
+                    if item_dict.get('subtype', None) == 'bot_message':
+                        continue
+                    # unpack message edits
+                    while item_dict.get('subtype', None) == "message_changed":
+                        channel = item_dict['channel']
+                        item_dict = item_dict['message']
+                        item_dict['channel'] = channel
+                    item = item_types[item_type].from_json(json.dumps(item_dict))
+                    for observer in team_bot_modules:
+                        observer.notify_message(sc, item)
 
-            time.sleep(1)
-    else:
-        logging.error("Connection Failed")
+                time.sleep(1)
+        else:
+            logging.error("Connection Failed")
+
+if __name__ == "__main__":
+    main()
