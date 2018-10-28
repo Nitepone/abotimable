@@ -5,8 +5,10 @@ name = "pypi"
 
 [packages]
 slackclient = "*"
+dataclasses-json = "*"
 flask = "*"
 pystache = "*"
+dataclasses-json = "*"
 
 [dev-packages]
 
