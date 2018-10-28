@@ -7,6 +7,7 @@ from dataclasses_json import dataclass_json
 @dataclass_json
 @dataclass
 class Reaction:
+    type: str
     user: str # The UID of the user making the reaction
     reaction: str # The reaction by its string name
     item_user: str # The ID of the user being reacted to
