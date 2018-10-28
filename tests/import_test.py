@@ -15,6 +15,7 @@ import abotimable.teamBotModule
 import abotimable.testmodule
 import abotimable.remindMention
 import abotimable.ricFlair
+import abotimable.grammar
 
 logging.info("Importing other modules...")
 # import abotimable.server

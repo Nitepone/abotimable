@@ -7,6 +7,7 @@ from abotimable.model.message import Message
 from abotimable.model.reaction import Reaction
 from abotimable.testmodule import TestModule
 from abotimable.remindMention import RemindMention
+from abotimable.grammar import GrammarModule
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -18,6 +19,7 @@ item_types = {
 team_bot_modules = [
     TestModule(),
     RemindMention(),
+    GrammarModule(),
 ]
 
 def main():
