@@ -22,7 +22,7 @@ class RicFlair():
         else:
             return
 
-    def notify_message(self, team_rtm, message):
+    def notify_message(self, slack_client, message):
         self.check_for_woo(message)
 
 

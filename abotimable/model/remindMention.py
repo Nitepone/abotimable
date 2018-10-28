@@ -22,7 +22,7 @@ class RemindMention():
     def process_payload(payload):
         return
 
-    def notify_message(self, team_rtm, message):
+    def notify_message(self, slack_client, message):
         pass
 
 
