@@ -33,50 +33,61 @@ team_bot_modules = [
     LMGTFYModule()
 ]
 
+def bot_loop(bot: bot_model.Bot) -> None:
+    sc = SlackClient(bot.bot_access_token)
+
+    # notify general that the bot is online
+    sc.api_call(
+      "chat.postMessage",
+      channel="general",
+      text="Your favorite bot is back online. :tada:"
+    )
+
+    # here's where we do the stuff
+    if sc.rtm_connect(with_team_state=False):
+        while True:
+            item_list = sc.rtm_read()
+            assert isinstance(item_list, list)
+
+            for item_dict in item_list:
+                logger.debug(item_dict)
+                assert isinstance(item_dict, dict)
+
+                item_type = item_dict["type"]
+                if item_type not in item_types:
+                    continue
+                # skip bot messages
+                if item_dict.get('subtype', None) == 'bot_message':
+                    continue
+                # unpack message edits
+                while item_dict.get('subtype', None) == "message_changed":
+                    channel = item_dict['channel']
+                    item_dict = item_dict['message']
+                    item_dict['channel'] = channel
+                item = item_types[item_type].from_json(json.dumps(item_dict))
+                for observer in team_bot_modules:
+                    t = threading.Thread(
+                        target=observer.notify_message,
+                        args=(sc, item),
+                        daemon=True
+                    )
+                    t.start()
+
+            time.sleep(1)
+    else:
+        logger.error("Connection Failed")
+
 def main():
+    threads = []
+
     for bot in bot_model.get_bots():
-        sc = SlackClient(bot.bot_access_token)
+        bot_loop(bot)
+        # t = threading.Thread(target=bot_loop, args=(bot,))
+        # t.start()
+        # threads.append(t)
 
-        # notify general that the bot is online
-        sc.api_call(
-          "chat.postMessage",
-          channel="general",
-          text="Your favorite bot is back online. :tada:"
-        )
-
-        # here's where we do the stuff
-        if sc.rtm_connect(with_team_state=False):
-            while True:
-                item_list = sc.rtm_read()
-                assert isinstance(item_list, list)
-
-                for item_dict in item_list:
-                    logger.debug(item_dict)
-                    assert isinstance(item_dict, dict)
-
-                    item_type = item_dict["type"]
-                    if item_type not in item_types:
-                        continue
-                    # skip bot messages
-                    if item_dict.get('subtype', None) == 'bot_message':
-                        continue
-                    # unpack message edits
-                    while item_dict.get('subtype', None) == "message_changed":
-                        channel = item_dict['channel']
-                        item_dict = item_dict['message']
-                        item_dict['channel'] = channel
-                    item = item_types[item_type].from_json(json.dumps(item_dict))
-                    for observer in team_bot_modules:
-                        t = threading.Thread(
-                            target=observer.notify_message,
-                            args=(sc, item),
-                            daemon=True
-                        )
-                        t.start()
-
-                time.sleep(1)
-        else:
-            logger.error("Connection Failed")
+    while all(t.isAlive() for t in threads):
+        time.sleep(3)
 
 if __name__ == "__main__":
     main()
