@@ -19,6 +19,8 @@ import abotimable.grammar
 import abotimable.emotionmodule
 import abotimable.songLyrics
 import abotimable.superiorOS
+import abotimable.greeter
+import abotimable.lmgtfy
 
 logging.info("Importing other modules...")
 import abotimable.server
