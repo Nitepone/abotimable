@@ -42,6 +42,20 @@ Once you are inside of the `pipenv` virtual environment, you can proceed.
 python -m abotimable
 ```
 
+## Docker
+
+To build the docker image, run the following.
+
+```bash
+docker build -t abotimable:latest .
+```
+
+Once the above is complete, run the following to start the server in your terminal.
+
+```bash
+docker run -tip 5000:5000 abotimable
+```
+
 ## Testing
 
 Tests are located in the `tests` directory.
