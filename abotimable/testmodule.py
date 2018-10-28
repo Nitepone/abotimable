@@ -9,7 +9,8 @@ class TestModule:
     def __init__(self):
         pass
 
-    def notifyMessage(self, teamRTM, message):
+
+    def notify_message(teamRTM, message):
         print(message.text)
 
 TeamBotModule.register(TestModule)
