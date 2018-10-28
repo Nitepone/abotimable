@@ -49,11 +49,14 @@ def post_install():
 
     assert isinstance(auth_response, dict)
     assert auth_response['ok'] == True
+    assert 'bot' in auth_response, \
+        "You may need to add bot permissions to your app"
 
     b = BotModel.Bot(
+        bot_user_id=auth_response['bot']['bot_user_id'],
+        bot_access_token=auth_response['bot']['bot_access_token'],
         team_name=auth_response['team_name'],
         team_id=auth_response['team_id'],
-        token=auth_response['access_token']
     )
     b.save()
 
