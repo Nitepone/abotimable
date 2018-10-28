@@ -16,8 +16,13 @@ why would anyone say anything about Linux?
 @version 1.0
 
 """
-
+import logging
 import random
+from slackclient import SlackClient
+from .teamBotModule import TeamBotModule
+from .model.message import Message
+
+logger = logging.getLogger(__name__)
 
 
 def buildmessage(channel, text):
@@ -68,6 +73,27 @@ def prepare_counterargument(classification):
         counter = "But all of my preferences are synced across everything ever."
 
     return counter
+
+
+class SuperiorOSModule:
+
+    def notify_message(self, slack_client: SlackClient,
+            message: Message) -> None:
+        incoming = message.text
+        hot_contents = contains_os_mention(incoming)
+        rand = random.randint(1, 10)
+        if hot_contents != "":
+            outgoing = prepare_counterargument(hot_contents)
+            message_response = slack_client.api_call(
+                "chat.postMessage",
+                channel = message.channel,
+                text = outgoing
+            )
+            logger.info("Sent: {}".format(outgoing))
+        else:
+            logger.warn("No hot contents found for OS")
+
+TeamBotModule.register(SuperiorOSModule)
 
 
 if __name__ == '__main__':
