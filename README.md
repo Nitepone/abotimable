@@ -44,6 +44,16 @@ FLASK_APP=abotimable/server.py flask run
 
 *This will likely change in the future*
 
+## Testing
+
+Tests are located in the `tests` directory.
+
+Once you are inside of the `pipenv` virtual environment, you can proceed.
+
+```bash
+python3.7 -m tests.bots_test
+```
+
 ## Contributing
 
 In general, this project follows guidelines set forward by
