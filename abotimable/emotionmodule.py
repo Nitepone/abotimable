@@ -5,7 +5,7 @@
 
     Description: user user emotions to make sensitive responses
 """
-from ..teamBotModule import TeamBotModule
+from .teamBotModule import TeamBotModule
 from watson_developer_cloud import ToneAnalyzerV3
 import configparser
 import json
