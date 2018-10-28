@@ -9,6 +9,7 @@ from abotimable.testmodule import TestModule
 from abotimable.remindMention import RemindMention
 from abotimable.grammar import GrammarModule
 from abotimable.emotionmodule import EmotionModule
+from abotimable.superiorOS import SuperiorOSModule
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -21,7 +22,8 @@ team_bot_modules = [
     TestModule(),
     RemindMention(),
     GrammarModule(),
-    EmotionModule()
+    EmotionModule(),
+    SuperiorOSModule()
 ]
 
 def main():
