@@ -36,6 +36,7 @@ team_bot_modules = [
 ]
 
 def bot_loop(bot: bot_model.Bot) -> None:
+    logger.info("Starting bot loop")
     sc = SlackClient(bot.bot_access_token)
 
     # here's where we do the stuff
@@ -82,13 +83,12 @@ def bot_loop_monitor(bot: bot_model.Bot) -> None:
         time.sleep(timeout)
         timeout = timeout * 2
 
-def main():
-    threads = []
+def start_bot_monitor(bot: bot_model.Bot) -> None:
+    threading.Thread(target=bot_loop_monitor, args=(bot,)).start()
 
+def main():
     for bot in bot_model.get_bots():
-        t = threading.Thread(target=bot_loop_monitor, args=(bot,))
-        t.start()
-        threads.append(t)
+        start_bot_monitor(bot)
 
 if __name__ == "__main__":
     main()

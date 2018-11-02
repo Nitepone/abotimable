@@ -5,14 +5,17 @@ import logging
 from flask import request
 from slackclient import SlackClient
 
-from abotimable import app
+from abotimable import app, slackrtm
 from abotimable.model import bot as bot_model
 
 logging.basicConfig(level=logging.DEBUG)
 
-# read in the template
+# read in the templates
 with open('templates/index.mustache') as fh:
     index_template = fh.read()
+
+with open('templates/success.mustache') as fh:
+    success_template = fh.read()
 
 config = configparser.RawConfigParser()
 config.read('config.ini')
@@ -46,7 +49,7 @@ def post_install():
       "oauth.access",
       client_id=client_id,
       client_secret=client_secret,
-      redirect_url=oauth_redirect,
+      redirect_uri=oauth_redirect,
       code=auth_code
     )
 
@@ -63,10 +66,9 @@ def post_install():
         team_name=auth_response['team_name'],
         team_id=auth_response['team_id'],
     )
-    b.save()
+    b.save(callback=slackrtm.start_bot_monitor)
 
-    # return something
-    return "Success!"
+    return pystache.render(success_template, {})
 
 if __name__ == "__main__":
     run()
