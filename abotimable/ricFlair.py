@@ -6,7 +6,7 @@
     Description: Anytime "woo" is mentioned in chat, abotimable will post a ric flair picture
 """
 import re
-from ..teamBotModule import TeamBotModule
+from .teamBotModule import TeamBotModule
 
 
 class RicFlair():

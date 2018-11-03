@@ -1,13 +1,22 @@
 import time
 import logging
+import coloredlogs
 import json
+import threading
 from slackclient import SlackClient
 from abotimable.model import bot as bot_model
 from abotimable.model.message import Message
 from abotimable.model.reaction import Reaction
 from abotimable.testmodule import TestModule
+from abotimable.remindMention import RemindMention
+from abotimable.grammar import GrammarModule
+from abotimable.emotionmodule import EmotionModule
+from abotimable.superiorOS import SuperiorOSModule
+from abotimable.greeter import GreeterModule
+from abotimable.lmgtfy import LMGTFYModule
 
-logging.basicConfig(level=logging.DEBUG)
+coloredlogs.install(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 item_types = {
     "message": Message,
@@ -15,10 +24,16 @@ item_types = {
 }
 
 team_bot_modules = [
-    TestModule()
+    TestModule(),
+    RemindMention(),
+    GrammarModule(),
+    EmotionModule(),
+    SuperiorOSModule(),
+    GreeterModule(),
+    LMGTFYModule()
 ]
 
-for bot in bot_model.get_bots():
+def bot_loop(bot: bot_model.Bot) -> None:
     sc = SlackClient(bot.bot_access_token)
 
     # notify general that the bot is online
@@ -35,16 +50,44 @@ for bot in bot_model.get_bots():
             assert isinstance(item_list, list)
 
             for item_dict in item_list:
-                logging.debug(item_dict)
+                logger.debug(item_dict)
                 assert isinstance(item_dict, dict)
 
                 item_type = item_dict["type"]
                 if item_type not in item_types:
                     continue
+                # skip bot messages
+                if item_dict.get('subtype', None) == 'bot_message':
+                    continue
+                # unpack message edits
+                while item_dict.get('subtype', None) == "message_changed":
+                    channel = item_dict['channel']
+                    item_dict = item_dict['message']
+                    item_dict['channel'] = channel
                 item = item_types[item_type].from_json(json.dumps(item_dict))
                 for observer in team_bot_modules:
-                    observer.notify_message(sc, item)
+                    t = threading.Thread(
+                        target=observer.notify_message,
+                        args=(sc, item),
+                        daemon=True
+                    )
+                    t.start()
 
             time.sleep(1)
     else:
-        logging.error("Connection Failed")
+        logger.error("Connection Failed")
+
+def main():
+    threads = []
+
+    for bot in bot_model.get_bots():
+        bot_loop(bot)
+        # t = threading.Thread(target=bot_loop, args=(bot,))
+        # t.start()
+        # threads.append(t)
+
+    while all(t.isAlive() for t in threads):
+        time.sleep(3)
+
+if __name__ == "__main__":
+    main()
