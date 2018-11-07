@@ -13,7 +13,7 @@ Linux is completely ignored in this module. Because
 why would anyone say anything about Linux?
 
 @author Trevor S. (txs6996)
-@version 1.0
+@version 1.0.1
 
 """
 import logging
@@ -91,7 +91,8 @@ class SuperiorOSModule:
             )
             logger.info("Sent: {}".format(outgoing))
         else:
-            logger.warn("No hot contents found for OS")
+            logger.warning("No hot contents found for OS")
+
 
 TeamBotModule.register(SuperiorOSModule)
 
