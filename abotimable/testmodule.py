@@ -14,7 +14,7 @@ class TestModule:
 
     def notify_message(self, slack_client: SlackClient,
             message: Message) -> None:
-        print(message.text)
+        pass
 
 
 TeamBotModule.register(TestModule)

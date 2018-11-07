@@ -13,7 +13,7 @@ he mishears the name of the artist/band/song.
 Mistakes happen. Don't worry about it.
 
 @author Trevor S. (txs6996)
-@version 1.0
+@version 1.0.1
 
 """
 import logging
@@ -21,7 +21,6 @@ import random
 import configparser
 import lyricsgenius as genius
 from slackclient import SlackClient
-from .teamBotModule import TeamBotModule
 from .model.message import Message
 
 logger = logging.getLogger(__name__)
@@ -40,8 +39,16 @@ def buildmessage(channel, text):
     }
 
 
-def song_lookup(artist, song):
+def song_lookup(song, artist, slack_client, message):
     rand = random.randint(0, 1)
+    rand_msg = random.randint(0, len(smart_responses)-1)  # Choose a random smart response
+
+    message_response = slack_client.api_call(
+        "chat.postMessage",
+        channel=message.channel,
+        text=("<@{}> " + smart_responses[rand_msg]).format(message.user)
+    )
+
     if rand == 0:
         # Get the wrong artist
         s = api.search_song(song)

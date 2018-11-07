@@ -15,6 +15,7 @@ from abotimable.superiorOS import SuperiorOSModule
 from abotimable.greeter import GreeterModule
 from abotimable.lmgtfy import LMGTFYModule
 from abotimable.songLyrics import SongLyricsModule
+from abotimable.clim import Clim
 
 coloredlogs.install(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -32,7 +33,8 @@ team_bot_modules = [
     SuperiorOSModule(),
     GreeterModule(),
     LMGTFYModule(),
-    SongLyricsModule()
+    SongLyricsModule(),
+    Clim()
 ]
 
 def bot_loop(bot: bot_model.Bot) -> None:

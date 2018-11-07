@@ -12,18 +12,21 @@ Abotimable hasn't.
 Bonus points for using AOL instead of Google.
 
 @author Trevor S. (txs6996)
-@version 1.0
+@version 1.0.1
 
 """
 import logging
 from slackclient import SlackClient
 from .teamBotModule import TeamBotModule
 from .model.message import Message
+import random
 
 logger = logging.getLogger(__name__)
 
 base_url = "http://lmgtfy.com/?s=a&q="
 
+sensitivity = 0.5  # Sensitivity control for annoyance level. 0 = off; 1 = max annoyance
+# This should eventually become a global control for the individual session
 
 def buildmessage(channel, text):
     msg = {
@@ -44,16 +47,19 @@ class LMGTFYModule:
 
     def notify_message(self, slack_client: SlackClient, message: Message) -> None:
         if "?" not in message.text:
-            logger.info("No question mark in post; ignoring message")
+            #  No question mark in question, ignoring.
             return
-        question = message.text.split("?")[0]
-        res = make_link(question)
-        slack_client.api_call(
-            "chat.postMessage",
-            channel=message.channel,
-            text=res
-        )
-        logger.info(res)
+        else:
+            if random.random() < sensitivity:
+                question = message.text.split("?")[0]
+                res = make_link(question)
+                slack_client.api_call(
+                    "chat.postMessage",
+                    channel=message.channel,
+                    text=res
+                )
+                logger.info(res)
+
 
 TeamBotModule.register(LMGTFYModule)
 

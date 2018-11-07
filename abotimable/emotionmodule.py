@@ -51,6 +51,7 @@ class EmotionModule():
                 name="laughing",
                 timestamp=message.ts
             )
+            # TO-DO add oof reaction
             logger.info("Tone was sad, message sent")
         elif "anger" in tones:
             sc.api_call(

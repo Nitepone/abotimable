@@ -13,7 +13,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class clim:
+class Clim:
 
     def __init__(self):
         pass
@@ -22,4 +22,4 @@ class clim:
         pass
 
 
-TeamBotModule.register(clim)
+TeamBotModule.register(Clim)
