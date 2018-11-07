@@ -9,6 +9,7 @@ from abotimable import app, slackrtm
 from abotimable.model import bot as bot_model
 
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # read in the templates
 with open('templates/index.mustache') as fh:
@@ -16,6 +17,9 @@ with open('templates/index.mustache') as fh:
 
 with open('templates/success.mustache') as fh:
     success_template = fh.read()
+
+with open('templates/status.mustache') as fh:
+    status_template = fh.read()
 
 config = configparser.RawConfigParser()
 config.read('config.ini')
@@ -53,7 +57,7 @@ def post_install():
       code=auth_code
     )
 
-    logging.debug(auth_response)
+    logger.debug(auth_response)
 
     assert isinstance(auth_response, dict)
     assert auth_response['ok'] == True
@@ -69,6 +73,12 @@ def post_install():
     b.save(callback=slackrtm.start_bot_monitor)
 
     return pystache.render(success_template, {})
+
+@app.route("/status", methods=["GET"])
+def status():
+    return pystache.render(status_template, {
+        'teams': map(lambda bot: {"name": bot.team_name}, bot_model.get_bots())
+    })
 
 if __name__ == "__main__":
     run()

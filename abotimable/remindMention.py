@@ -12,6 +12,8 @@ import re
 import logging
 import time
 
+logger = logging.getLogger(__name__)
+
 
 class RemindMention:
 
@@ -39,10 +41,10 @@ class RemindMention:
                         text="Hey! <@{}> sent you a message!".format(message.user)
                     )
                     time.sleep(2)
-                logging.info("Created DM to user '{}'".format(user))
+                logger.info("Created DM to user '{}'".format(user))
             else:
-                logging.error("Error creating a DM request to slack")
-                logging.error(create_dm_request)
+                logger.error("Error creating a DM request to slack")
+                logger.error(create_dm_request)
 
 
     def notify_message(self, slack_client: SlackClient, message: Message) -> None:

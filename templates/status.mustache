@@ -1,0 +1,30 @@
+<style>
+body{background: #E51670;}
+.centered {
+    margin: 0;
+    background: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+.light-bg { background: #ffffdd; }
+.light-fg { color: #ffffdd; }
+.box {
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+}
+</style>
+
+<div class="centered">
+	<h2 class="light-fg">
+		TEAMS
+	</h2>
+	{{#teams}}
+	<div class="box light-bg">
+		{{name}}
+	</div>
+	{{/teams}}
+</div>
