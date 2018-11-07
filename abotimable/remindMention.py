@@ -1,6 +1,6 @@
 """
     File: remindMention.py
-    Version: 1.0.0
+    Version: 1.1.0
     Author: Chris Baudouin, Jr.
 
     Description: Reminds the recipient of a mention that they've been mentioned.
