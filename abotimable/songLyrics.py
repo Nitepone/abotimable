@@ -58,12 +58,16 @@ class SongLyricsModule:
 
     def notify_message(self, slack_client: SlackClient,
             message: Message) -> None:
-        song = song_lookup("", message.text)
-        message_response = slack_client.api_call(
-            "chat.postMessage",
-            channel = message.channel,
-            text = song
-        )
+        try:
+            artist, song = message.text.lstrip('!lyrics').split(',')
+            song = song_lookup(artist, song)
+            message_response = slack_client.api_call(
+                "chat.postMessage",
+                channel = message.channel,
+                text = song
+            )
+        except Exception:
+            pass
 
 
 if __name__ == '__main__':
