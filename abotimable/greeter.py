@@ -9,7 +9,7 @@ and productive time. That's why he wakes up every
 team morale up!
 
 @author Trevor S. (txs6996)
-@version 1.0
+@version 1.0.1
 
 """
 import logging
@@ -21,7 +21,7 @@ from .model.message import Message
 
 logger = logging.getLogger(__name__)
 
-greeting = "Hello everybody! Hope <@everyone> is having a wonderful and productive day :)"
+greeting = "Hello everybody! Hope <!everyone> is having a wonderful and productive day :)"
 
 
 class GreeterModule:
