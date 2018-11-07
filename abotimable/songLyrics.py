@@ -31,6 +31,10 @@ config.read('config.ini')
 client_id = config['GENIUS']['CLIENT_ACCESS_TOKEN']
 api = genius.Genius(client_id)
 
+smart_responses = ["one sec, let me see if i can remember that one",
+                   "what am I, shazam?",
+                   "please stop asking me to look up this junk",
+                   "lol people still listen to that?"]
 
 def buildmessage(channel, text):
     msg = {
@@ -66,13 +70,14 @@ class SongLyricsModule:
     def notify_message(self, slack_client: SlackClient,
             message: Message) -> None:
         try:
-            artist, song = message.text.lstrip('!lyrics').split(',')
-            song = song_lookup(artist, song)
-            message_response = slack_client.api_call(
-                "chat.postMessage",
-                channel = message.channel,
-                text = song
-            )
+            if "!lyrics" in message.text:
+                song, artist = message.text.lstrip('!lyrics').split(',')
+                song = song_lookup(song, artist, slack_client, message)
+                message_response = slack_client.api_call(
+                    "chat.postMessage",
+                    channel = message.channel,
+                    text = song
+                )
         except Exception:
             pass
 
