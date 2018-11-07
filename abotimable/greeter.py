@@ -35,13 +35,13 @@ class GreeterModule:
             return
         else:
             self.running = True
-            logging.info("Greeter sleeping for 50 seconds")
+            logger.info("Greeter sleeping for 50 seconds")
             time.sleep(50)      # wait slightly for first message
             while self.running:
                 sc.api_call("chat.postMessage", channel=channel, text=greeting)
                 numhours = random.randint(6, 24)
                 sleeptime = numhours * 3600
-                logging.info("Greeter sleeping for {} seconds".format(sleeptime))
+                logger.info("Greeter sleeping for {} seconds".format(sleeptime))
                 time.sleep(sleeptime)
 
 

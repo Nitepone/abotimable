@@ -20,6 +20,8 @@ from slackclient import SlackClient
 from .teamBotModule import TeamBotModule
 from .model.message import Message
 
+logger = logging.getLogger(__name__)
+
 base_url = "http://lmgtfy.com/?s=a&q="
 
 
@@ -42,7 +44,7 @@ class LMGTFYModule:
 
     def notify_message(self, slack_client: SlackClient, message: Message) -> None:
         if "?" not in message.text:
-            logging.info("No question mark in post; ignoring message")
+            logger.info("No question mark in post; ignoring message")
             return
         question = message.text.split("?")[0]
         res = make_link(question)
@@ -51,7 +53,7 @@ class LMGTFYModule:
             channel=message.channel,
             text=res
         )
-        logging.info(res)
+        logger.info(res)
 
 TeamBotModule.register(LMGTFYModule)
 

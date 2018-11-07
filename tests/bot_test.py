@@ -4,7 +4,8 @@ Test creation and query of bots from database
 .. note:: must be run on a new database
     consider running `rm sqlite3.db` before running this
 """
-import logging, sqlite3
+import logging
+import sqlite3
 from abotimable.model import bot as BotModel
 
 logging.basicConfig(level=logging.DEBUG)

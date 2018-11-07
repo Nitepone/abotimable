@@ -9,6 +9,7 @@ from abotimable import app, slackrtm
 from abotimable.model import bot as bot_model
 
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # read in the templates
 with open('templates/index.mustache') as fh:
@@ -53,7 +54,7 @@ def post_install():
       code=auth_code
     )
 
-    logging.debug(auth_response)
+    logger.debug(auth_response)
 
     assert isinstance(auth_response, dict)
     assert auth_response['ok'] == True
