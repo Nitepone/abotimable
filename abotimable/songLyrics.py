@@ -20,7 +20,9 @@ import logging
 import random
 import configparser
 import lyricsgenius as genius
+import time
 from slackclient import SlackClient
+from .settings import Settings
 from .model.message import Message
 
 logger = logging.getLogger(__name__)
@@ -71,6 +73,8 @@ class SongLyricsModule:
             message: Message) -> None:
         try:
             if "!lyrics" in message.text:
+                settings = Settings()
+                time.sleep(settings.delay)
                 song, artist = message.text.lstrip('!lyrics').split(',')
                 song = song_lookup(song, artist, slack_client, message)
                 message_response = slack_client.api_call(

@@ -16,17 +16,19 @@ Bonus points for using AOL instead of Google.
 
 """
 import logging
+import time
+import random
 from slackclient import SlackClient
 from .teamBotModule import TeamBotModule
 from .model.message import Message
-import random
+from .settings import Settings
 
 logger = logging.getLogger(__name__)
 
 base_url = "http://lmgtfy.com/?s=a&q="
 
-sensitivity = 0.5  # Sensitivity control for annoyance level. 0 = off; 1 = max annoyance
-# This should eventually become a global control for the individual session
+settings = Settings()
+
 
 def buildmessage(channel, text):
     msg = {
@@ -43,6 +45,7 @@ def make_link(question):
 
     return link
 
+
 class LMGTFYModule:
 
     def notify_message(self, slack_client: SlackClient, message: Message) -> None:
@@ -50,7 +53,8 @@ class LMGTFYModule:
             #  No question mark in question, ignoring.
             return
         else:
-            if random.random() < sensitivity:
+            if random.random() < settings.annoyance:
+                time.sleep(settings.delay)
                 question = message.text.split("?")[0]
                 res = make_link(question)
                 slack_client.api_call(

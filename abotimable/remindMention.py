@@ -15,8 +15,8 @@ import _thread as thread
 
 logger = logging.getLogger(__name__)
 
-
 class RemindMention:
+
 
     def __init__(self):
         pass

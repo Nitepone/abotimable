@@ -18,8 +18,10 @@ import time
 from slackclient import SlackClient
 from .teamBotModule import TeamBotModule
 from .model.message import Message
+from .settings import Settings
 
 logger = logging.getLogger(__name__)
+settings = Settings()
 
 greeting = "Hello everybody! Hope <!everyone> is having a wonderful and productive day :)"
 
@@ -44,8 +46,10 @@ class GreeterModule:
                 logger.info("Greeter sleeping for {} seconds".format(sleeptime))
                 time.sleep(sleeptime)
 
-
     def notify_message(self, slack_client: SlackClient, message: Message) -> None:
-        self.run_greeter(slack_client, message.channel)
+        if not settings.quiet_entrance:
+            self.run_greeter(slack_client, message.channel)
+        else:
+            logger.info("Quiet mode enabled; not posting a greeting message.")
 
 TeamBotModule.register(GreeterModule)

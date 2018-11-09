@@ -17,7 +17,7 @@ from abotimable.lmgtfy import LMGTFYModule
 from abotimable.songLyrics import SongLyricsModule
 from abotimable.clim import Clim
 
-coloredlogs.install(level=logging.DEBUG)
+coloredlogs.install(level=logging.BASIC_FORMAT)
 logger = logging.getLogger(__name__)
 
 item_types = {
@@ -36,6 +36,7 @@ team_bot_modules = [
     SongLyricsModule(),
     Clim()
 ]
+
 
 def bot_loop(bot: bot_model.Bot) -> None:
     logger.info("Starting bot loop")
@@ -64,16 +65,18 @@ def bot_loop(bot: bot_model.Bot) -> None:
                     item_dict['channel'] = channel
                 item = item_types[item_type].from_json(json.dumps(item_dict))
                 for observer in team_bot_modules:
-                    t = threading.Thread(
-                        target=observer.notify_message,
-                        args=(sc, item),
-                        daemon=True
-                    )
-                    t.start()
-
-            time.sleep(1)
+                    try:
+                        t = threading.Thread(
+                            target=observer.notify_message,
+                            args=(sc, item),
+                            daemon=True
+                        )
+                        t.start()
+                    except:
+                        logger.error("Error starting thread")
     else:
         logger.error("Connection Failed")
+
 
 def bot_loop_monitor(bot: bot_model.Bot) -> None:
     timeout = 1
@@ -85,12 +88,15 @@ def bot_loop_monitor(bot: bot_model.Bot) -> None:
         time.sleep(timeout)
         timeout = timeout * 2
 
+
 def start_bot_monitor(bot: bot_model.Bot) -> None:
     threading.Thread(target=bot_loop_monitor, args=(bot,)).start()
+
 
 def main():
     for bot in bot_model.get_bots():
         start_bot_monitor(bot)
+
 
 if __name__ == "__main__":
     main()
