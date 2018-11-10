@@ -20,7 +20,7 @@ class Clim:
         pass
 
     def its_clim(self, message : Message) -> bool:
-        if "@" in message.text and message.user == "UDQAXS6UD":
+        if "@" in message.text and message.user == "U2AEM0BSA":
             return True
         else:
             return False
