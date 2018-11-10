@@ -16,6 +16,7 @@ from abotimable.greeter import GreeterModule
 from abotimable.lmgtfy import LMGTFYModule
 from abotimable.songLyrics import SongLyricsModule
 from abotimable.clim import Clim
+from abotimable.ricFlair import RicFlair
 
 coloredlogs.install(level=logging.BASIC_FORMAT)
 logger = logging.getLogger(__name__)
@@ -34,7 +35,8 @@ team_bot_modules = [
     GreeterModule(),
     LMGTFYModule(),
     SongLyricsModule(),
-    Clim()
+    Clim(),
+    RicFlair()
 ]
 
 
