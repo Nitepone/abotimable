@@ -1,5 +1,4 @@
 import configparser
-import sqlite3
 import pystache
 import logging
 from flask import request

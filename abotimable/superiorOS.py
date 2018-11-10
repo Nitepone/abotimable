@@ -18,11 +18,9 @@ why would anyone say anything about Linux?
 """
 import logging
 import random
-import time
 from slackclient import SlackClient
 from .teamBotModule import TeamBotModule
 from .model.message import Message
-from .settings import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -79,14 +77,11 @@ def prepare_counterargument(classification):
 
 class SuperiorOSModule:
 
-    def notify_message(self, slack_client: SlackClient,
-            message: Message) -> None:
+    def notify_message(self, slack_client: SlackClient, message: Message) -> None:
         incoming = message.text
         hot_contents = contains_os_mention(incoming)
         rand = random.randint(1, 10)
-        settings = Settings()
         if hot_contents != "":
-            time.sleep(settings.delay)
             outgoing = prepare_counterargument(hot_contents)
             message_response = slack_client.api_call(
                 "chat.postMessage",

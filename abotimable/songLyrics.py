@@ -20,9 +20,7 @@ import logging
 import random
 import configparser
 import lyricsgenius as genius
-import time
 from slackclient import SlackClient
-from .settings import Settings
 from .model.message import Message
 
 logger = logging.getLogger(__name__)
@@ -37,6 +35,7 @@ smart_responses = ["one sec, let me see if i can remember that one",
                    "what am I, shazam?",
                    "please stop asking me to look up this junk",
                    "lol people still listen to that?"]
+
 
 def buildmessage(channel, text):
     msg = {
@@ -73,8 +72,6 @@ class SongLyricsModule:
             message: Message) -> None:
         try:
             if "!lyrics" in message.text:
-                settings = Settings()
-                time.sleep(settings.delay)
                 song, artist = message.text.lstrip('!lyrics').split(',')
                 song = song_lookup(song, artist, slack_client, message)
                 message_response = slack_client.api_call(

@@ -64,6 +64,7 @@ def bot_loop(bot: bot_model.Bot) -> None:
                     item_dict = item_dict['message']
                     item_dict['channel'] = channel
                 item = item_types[item_type].from_json(json.dumps(item_dict))
+                time.sleep(1)  # Adds human like delay to responding
                 for observer in team_bot_modules:
                     try:
                         t = threading.Thread(

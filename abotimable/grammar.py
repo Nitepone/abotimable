@@ -13,7 +13,6 @@ don't worry about it. He's making the world a better place.
 """
 import logging
 import random
-import time
 from slackclient import SlackClient
 from .teamBotModule import TeamBotModule
 from .model.message import Message
@@ -66,7 +65,6 @@ class GrammarModule:
         word = containscommonissue(incoming)
         rand = random.random()
         if word is not None and rand < settings.annoyance:
-            time.sleep(settings.delay)
             outgoing = correctgrammar(word)
             message_response = slack_client.api_call(
                 "chat.postMessage",
@@ -76,7 +74,7 @@ class GrammarModule:
             logger.info("Grammar module sent message: {}".format(outgoing))
             logger.info("Reponse: {}".format(message_response))
         else:
-            logger.warn("Grammar module is skipping post")
+            logger.warning("Grammar module is skipping post")
 
 TeamBotModule.register(GrammarModule)
 

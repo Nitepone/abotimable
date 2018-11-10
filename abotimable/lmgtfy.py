@@ -16,7 +16,6 @@ Bonus points for using AOL instead of Google.
 
 """
 import logging
-import time
 import random
 from slackclient import SlackClient
 from .teamBotModule import TeamBotModule
@@ -54,7 +53,6 @@ class LMGTFYModule:
             return
         else:
             if random.random() < settings.annoyance:
-                time.sleep(settings.delay)
                 question = message.text.split("?")[0]
                 res = make_link(question)
                 slack_client.api_call(
