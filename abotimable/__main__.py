@@ -1,9 +1,9 @@
 import time
 import threading
 import logging
-
 from . import server
 from . import slackrtm
+
 
 def server_monitor():
     while True:
@@ -14,6 +14,7 @@ def server_monitor():
             logging.error(e)
         logging.info("Waiting 5 seconds before restarting server thread")
         time.sleep(5)
+
 
 threading.Thread(target=server_monitor).start()
 

@@ -71,10 +71,10 @@ class GrammarModule:
                 channel = message.channel,
                 text = outgoing
             )
-            logger.info("Grammar module sent message: {}".format(outgoing))
-            logger.info("Reponse: {}".format(message_response))
+            logger.debug("Grammar module sent message: {}".format(outgoing))
+            logger.debug("Reponse: {}".format(message_response))
         else:
-            logger.warning("Grammar module is skipping post")
+            logger.debug("Grammar module is skipping post")
 
 TeamBotModule.register(GrammarModule)
 

@@ -88,9 +88,9 @@ class SuperiorOSModule:
                 channel = message.channel,
                 text = outgoing
             )
-            logger.info("Sent: {}".format(outgoing))
+            logger.debug("Sent: {}".format(outgoing))
         else:
-            logger.warning("No hot contents found for OS")
+            logger.debug("No hot contents found for OS")
 
 
 TeamBotModule.register(SuperiorOSModule)

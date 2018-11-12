@@ -31,25 +31,25 @@ class GreeterModule:
     def __init__(self):
         self.running = False
 
-
     def run_greeter(self, sc: SlackClient, channel):
         if self.running:
             return
         else:
             self.running = True
-            logger.info("Greeter sleeping for 50 seconds")
+            logger.debug("Greeter sleeping for 50 seconds")
             time.sleep(50)      # wait slightly for first message
             while self.running:
                 sc.api_call("chat.postMessage", channel=channel, text=greeting)
                 numhours = random.randint(6, 24)
                 sleeptime = numhours * 3600
-                logger.info("Greeter sleeping for {} seconds".format(sleeptime))
+                logger.debug("Greeter sleeping for {} seconds".format(sleeptime))
                 time.sleep(sleeptime)
 
     def notify_message(self, slack_client: SlackClient, message: Message) -> None:
         if not settings.quiet_entrance:
             self.run_greeter(slack_client, message.channel)
         else:
-            logger.info("Quiet mode enabled; not posting a greeting message.")
+            logger.debug("Quiet mode enabled; not posting a greeting message.")
+
 
 TeamBotModule.register(GreeterModule)

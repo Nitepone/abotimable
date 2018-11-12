@@ -66,6 +66,7 @@ def song_lookup(song, artist, slack_client, message):
             if s.title != song:
                 return s
 
+
 class SongLyricsModule:
 
     def notify_message(self, slack_client: SlackClient,
@@ -86,4 +87,3 @@ class SongLyricsModule:
 if __name__ == '__main__':
     incoming = ""
     song = song_lookup("Coheed and Cambria", "Garbage")
-    print(song)

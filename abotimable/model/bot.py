@@ -66,6 +66,7 @@ class Bot:
         conn.commit()
         conn.close()
 
+
 def get_bots():
     """
     generator to load Bot objects from database
@@ -76,4 +77,4 @@ def get_bots():
         for row in c.execute("SELECT bot_user_id, bot_access_token, team_name, team_id FROM bot"):
             yield Bot(bot_user_id=row[0], bot_access_token=row[1], team_name=row[2], team_id=row[3])
     except sqlite3.OperationalError as exc:
-        logger.warn(exc)
+        logger.warning(exc)

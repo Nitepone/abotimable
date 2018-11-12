@@ -41,7 +41,7 @@ team_bot_modules = [
 
 
 def bot_loop(bot: bot_model.Bot) -> None:
-    logger.info("Starting bot loop")
+    logger.info("Starting bot loop for bot: " + bot.team_name)
     sc = SlackClient(bot.bot_access_token)
 
     # here's where we do the stuff

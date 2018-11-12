@@ -73,11 +73,9 @@ def post_install():
 
     return pystache.render(success_template, {})
 
+
 @app.route("/status", methods=["GET"])
 def status():
     return pystache.render(status_template, {
         'teams': map(lambda bot: {"name": bot.team_name}, bot_model.get_bots())
     })
-
-if __name__ == "__main__":
-    run()
