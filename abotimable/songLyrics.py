@@ -32,7 +32,7 @@ client_id = config['GENIUS']['CLIENT_ACCESS_TOKEN']
 api = genius.Genius(client_id)
 
 smart_responses = ["one sec, let me see if i can remember that one",
-                   "what am I, shazam?",
+                   "please don't start singing",
                    "please stop asking me to look up this junk",
                    "lol people still listen to that?"]
 
