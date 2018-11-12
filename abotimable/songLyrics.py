@@ -13,7 +13,7 @@ he mishears the name of the artist/band/song.
 Mistakes happen. Don't worry about it.
 
 @author Trevor S. (txs6996)
-@version 1.0.2
+@version 1.0.3
 
 """
 import logging
@@ -35,13 +35,6 @@ smart_responses = ["one sec, let me see if i can remember that one",
                    "please don't start singing",
                    "please stop asking me to look up this junk",
                    "lol people still listen to that?"]
-
-
-def buildmessage(channel, text):
-    msg = {
-        channel: channel,
-        text: text
-    }
 
 
 def song_lookup(song, artist, slack_client, message):
@@ -83,8 +76,3 @@ class SongLyricsModule:
                 )
         except Exception:
             pass
-
-
-if __name__ == '__main__':
-    incoming = ""
-    song = song_lookup("Coheed and Cambria", "Garbage")
