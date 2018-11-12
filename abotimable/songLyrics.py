@@ -73,7 +73,7 @@ class SongLyricsModule:
 
     def notify_message(self, slack_client: SlackClient, message: Message) -> None:
         try:
-            if "!lyrics" in message.text:
+            if "!lyrics" in message.text.lower():
                 song, artist = message.text.lstrip('!lyrics').split(',')
                 song = song_lookup(song, artist, slack_client, message)
                 message_response = slack_client.api_call(
