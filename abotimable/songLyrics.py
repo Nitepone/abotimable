@@ -13,7 +13,7 @@ he mishears the name of the artist/band/song.
 Mistakes happen. Don't worry about it.
 
 @author Trevor S. (txs6996)
-@version 1.0.1
+@version 1.0.2
 
 """
 import logging
@@ -61,24 +61,25 @@ def song_lookup(song, artist, slack_client, message):
 
     else:
         # Get the wrong song name
-        a = api.search_artist(artist, max_songs=5)
-        for s in a.songs:
-            if s.title != song:
-                return s
+        max_songs = 5  # Max number of songs to search for on Artist profile
+        a = api.search_artist(artist, max_songs)
+        s = a.songs[random.randint(0, max_songs-1)]
+        while s.title == song:
+            s = a.songs[random.randint(0, max_songs-1)]
+        return s
 
 
 class SongLyricsModule:
 
-    def notify_message(self, slack_client: SlackClient,
-            message: Message) -> None:
+    def notify_message(self, slack_client: SlackClient, message: Message) -> None:
         try:
             if "!lyrics" in message.text:
                 song, artist = message.text.lstrip('!lyrics').split(',')
                 song = song_lookup(song, artist, slack_client, message)
                 message_response = slack_client.api_call(
                     "chat.postMessage",
-                    channel = message.channel,
-                    text = song
+                    channel=message.channel,
+                    text=song
                 )
         except Exception:
             pass
