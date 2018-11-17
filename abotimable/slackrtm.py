@@ -1,3 +1,5 @@
+import pickle
+import shelve
 import time
 import logging
 import coloredlogs
@@ -46,6 +48,7 @@ def bot_loop(bot: bot_model.Bot) -> None:
 
     # here's where we do the stuff
     if sc.rtm_connect(with_team_state=False):
+        # check for preferences
         while True:
             item_list = sc.rtm_read()
             assert isinstance(item_list, list)
