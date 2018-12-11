@@ -13,7 +13,7 @@ Linux is completely ignored in this module. Because
 why would anyone say anything about Linux?
 
 @author Trevor S. (txs6996)
-@version 1.0
+@version 1.0.1
 
 """
 import logging
@@ -77,8 +77,7 @@ def prepare_counterargument(classification):
 
 class SuperiorOSModule:
 
-    def notify_message(self, slack_client: SlackClient,
-            message: Message) -> None:
+    def notify_message(self, slack_client: SlackClient, message: Message) -> None:
         incoming = message.text
         hot_contents = contains_os_mention(incoming)
         rand = random.randint(1, 10)
@@ -89,9 +88,10 @@ class SuperiorOSModule:
                 channel = message.channel,
                 text = outgoing
             )
-            logger.info("Sent: {}".format(outgoing))
+            logger.debug("Sent: {}".format(outgoing))
         else:
-            logger.warn("No hot contents found for OS")
+            logger.debug("No hot contents found for OS")
+
 
 TeamBotModule.register(SuperiorOSModule)
 

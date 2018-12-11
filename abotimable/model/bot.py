@@ -1,9 +1,10 @@
 #!/usr/bin/env false
-
 import sqlite3
 import logging
 from dataclasses import dataclass
+from types import FunctionType
 
+logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     raise SystemExit("Do not execute this script.")
@@ -31,7 +32,7 @@ class Bot:
     team_name: str
     team_id: str
 
-    def save(self):
+    def save(self, callback=None):
         """
         Save this bot into the database
         """
@@ -45,9 +46,15 @@ class Bot:
                 "VALUES ('{}', '{}', '{}', '{}')".format(self.bot_user_id, self.bot_access_token, self.team_name, self.team_id)
             )
         except sqlite3.IntegrityError as e:
-            logging.error(e);
+            logger.error(e)
         conn.commit()
         conn.close()
+
+        if isinstance(callback, FunctionType):
+            logger.info("Saved new bot, passing to callback")
+            callback(self)
+        else:
+            logger.info("Saved new bot, no callback.")
 
     def delete(self) -> None:
         """
@@ -59,11 +66,15 @@ class Bot:
         conn.commit()
         conn.close()
 
+
 def get_bots():
     """
     generator to load Bot objects from database
     """
     conn = sqlite3.connect('sqlite3.db')
     c = conn.cursor()
-    for row in c.execute("SELECT bot_user_id, bot_access_token, team_name, team_id FROM bot"):
-        yield Bot(bot_user_id=row[0], bot_access_token=row[1], team_name=row[2], team_id=row[3])
+    try:
+        for row in c.execute("SELECT bot_user_id, bot_access_token, team_name, team_id FROM bot"):
+            yield Bot(bot_user_id=row[0], bot_access_token=row[1], team_name=row[2], team_id=row[3])
+    except sqlite3.OperationalError as exc:
+        logger.warning(exc)

@@ -9,8 +9,8 @@ import logging
 from .teamBotModule import TeamBotModule
 from watson_developer_cloud import ToneAnalyzerV3
 import configparser
-import json
 logger = logging.getLogger(__name__)
+
 
 class EmotionModule():
 
@@ -51,7 +51,8 @@ class EmotionModule():
                 name="laughing",
                 timestamp=message.ts
             )
-            logger.info("Tone was sad, message sent")
+            # TO-DO add oof reaction
+            logger.debug("Tone was sad, message sent")
         elif "anger" in tones:
             sc.api_call(
                 "reactions.add",
@@ -59,7 +60,7 @@ class EmotionModule():
                 name="baby_bottle",
                 timestamp=message.ts
             )
-            logger.info("Tone was angry, message sent")
+            logger.debug("Tone was angry, message sent")
         elif "joy" in tones:
             sc.api_call(
                 "reactions.add",
@@ -67,7 +68,7 @@ class EmotionModule():
                 name="thumbsdown",
                 timestamp=message.ts
             )
-            logger.info("Tone was joyful, message sent")
+            logger.debug("Tone was joyful, message sent")
         elif "confident" in tones:
             sc.api_call(
                 "reactions.add",
@@ -75,9 +76,9 @@ class EmotionModule():
                 name="thinking_face",
                 timestamp=message.ts
             )
-            logger.info("Tone was confident, message sent")
+            logger.debug("Tone was confident, message sent")
         else:
-            logger.info("Tone was {}, no reply.".format(tone))
+            logger.debug("Tone was {}, no reply.".format(tone))
 
 
 TeamBotModule.register(EmotionModule)

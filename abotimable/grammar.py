@@ -16,8 +16,11 @@ import random
 from slackclient import SlackClient
 from .teamBotModule import TeamBotModule
 from .model.message import Message
+from .settings import Settings
 
 logger = logging.getLogger(__name__)
+
+settings = Settings()
 
 grammar_errors = {
     "you're": "your",
@@ -60,18 +63,18 @@ class GrammarModule:
             message: Message) -> None:
         incoming = message.text
         word = containscommonissue(incoming)
-        rand = random.randint(1, 10)
-        if word is not None and rand <= 3:
+        rand = random.random()
+        if word is not None and rand < settings.annoyance:
             outgoing = correctgrammar(word)
             message_response = slack_client.api_call(
                 "chat.postMessage",
                 channel = message.channel,
                 text = outgoing
             )
-            logger.info("Grammar module sent message: {}".format(outgoing))
-            logger.info("Reponse: {}".format(message_response))
+            logger.debug("Grammar module sent message: {}".format(outgoing))
+            logger.debug("Reponse: {}".format(message_response))
         else:
-            logger.warn("Grammar module is skipping post")
+            logger.debug("Grammar module is skipping post")
 
 TeamBotModule.register(GrammarModule)
 
@@ -80,7 +83,6 @@ if __name__ == '__main__':
     word = containscommonissue(incoming)
     print(incoming)
     rand = random.randint(1, 10)
-    print(rand)
     if word is not None and rand <= 3:
         outgoing = correctgrammar(word)
         print(outgoing)
