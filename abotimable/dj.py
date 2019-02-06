@@ -1,0 +1,87 @@
+import random
+
+from .model.message import Message
+from slackclient import SlackClient
+import requests
+
+ACCEPTED = 202
+NOT_ACCEPTED = 406
+DISABLED = 407
+EXPLICIT = 405
+NOT_FOUND = 404
+ERROR = 500
+
+# When Spotiserver likes the song
+accepted_responses = ["i got u",
+                      "i added it to the list",
+                      "added to the request list!",
+                      "turning up the volume for that one",
+                      "got it! remember the more requests i get for a song, the more likely i am to choose it"]
+
+# When a listener requests too many songs or the same song
+not_accepted_responses = ["you need to slow down",
+                               "who made you the DJ?",
+                               "can't take that request, gotta slow you down",
+                               "no"]
+
+# When Spotiserver isn't taking requests
+disabled_responses = ["i'm not taking requests right now",
+                      "ask slackbot to play that",
+                      "no"]
+
+# Spotiserver deems that song explicit
+explicit_responses = ["sorry, that's explicit",
+                      "that has bad words!",
+                      "this is a PG event",
+                      "come on, seriously? no."]
+
+not_found_responses = ["yo, can't find that one",
+                       "don't know that, make sure you supply me with the artist too",
+                       "never heard of that song"]
+
+error_responses = ["something very serious happened internally"]
+
+need_artist_responses = ["need the artist",
+                         "!request <track>, <artist>"]
+
+
+class Spotify:
+
+    def __init__(self):
+        pass
+
+    def process_request(self, slack_client: SlackClient, message: Message):
+        spotiserverEnvironment = "http://localhost:3000"
+        if len(message.text.lstrip('!request ').split(', ')) >= 2:
+            song, artist = message.text.lstrip('!request ').split(', ')
+            payload = {'track': song, 'artist': artist, 'listener': message.user}
+            r = requests.get(spotiserverEnvironment, params=payload)
+            if r.status_code == ACCEPTED:
+                self.sendMessage(slack_client, message, accepted_responses)
+            elif r.status_code == NOT_ACCEPTED:
+                self.sendMessage(slack_client, message, not_accepted_responses)
+            elif r.status_code == DISABLED:
+                self.sendMessage(slack_client, message, disabled_responses)
+            elif r.status_code == EXPLICIT:
+                self.sendMessage(slack_client, message, explicit_responses)
+            elif r.status_code == NOT_FOUND:
+                self.sendMessage(slack_client, message, not_found_responses)
+            elif r.status_code == ERROR:
+                self.sendMessage(slack_client, message, error_responses)
+        else:
+            self.sendMessage(slack_client, message, need_artist_responses)
+
+    def sendMessage(self, slack_client: SlackClient, message: Message, responseList):
+        rand_msg = random.randint(0, len(responseList) - 1)  # Choose a random message from response list
+
+        message_response = slack_client.api_call(
+            "chat.postMessage",
+            channel=message.channel,
+            text=("<@{}> " + responseList[rand_msg]).format(message.user),
+            thread_ts=message.ts
+        )
+
+    def notify_message(self, slack_client: SlackClient, message: Message) -> None:
+        # IMPORTANT: This feature is currently supported by only one Slack workspace
+        if "!request" in message.text and message.channel == "CET04PNSG":
+            self.process_request(slack_client, message)
