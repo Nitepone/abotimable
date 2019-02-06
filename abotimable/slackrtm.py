@@ -19,6 +19,7 @@ from abotimable.lmgtfy import LMGTFYModule
 from abotimable.songLyrics import SongLyricsModule
 from abotimable.clim import Clim
 from abotimable.ricFlair import RicFlair
+from abotimable.dj import Spotify
 
 coloredlogs.install(level=logging.BASIC_FORMAT)
 logger = logging.getLogger(__name__)
@@ -32,13 +33,14 @@ team_bot_modules = [
     TestModule(),
     RemindMention(),
     GrammarModule(),
-    EmotionModule(),
+    #EmotionModule(),
     SuperiorOSModule(),
     GreeterModule(),
     LMGTFYModule(),
     SongLyricsModule(),
     Clim(),
-    RicFlair()
+    RicFlair(),
+    Spotify()
 ]
 
 

@@ -11,6 +11,8 @@ pystache = "*"
 watson-developer-cloud = "*"
 lyricsgenius = "*"
 coloredlogs = "*"
+requests = "*"
+marshmallow = "*"
 
 [dev-packages]
 
