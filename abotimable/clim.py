@@ -3,7 +3,8 @@
     Version: 1.0.1
     Author: Chris Baudouin, Jr.
 
-    Description: All clim-related features including but not limited to: "you got clim'd!", climtistics and more.
+    Description: All clim-related features including but not limited to: "you
+                 got clim'd!", climtistics and more.
 """
 from .teamBotModule import TeamBotModule
 from .model.message import Message
@@ -19,7 +20,7 @@ class Clim:
     def __init__(self):
         pass
 
-    def its_clim(self, message : Message) -> bool:
+    def its_clim(self, message: Message) -> bool:
         if "@" in message.text and message.user == "U2AEM0BSA":
             return True
         else:
@@ -31,10 +32,12 @@ class Clim:
             message_response = slack_client.api_call(
                 "chat.postMessage",
                 channel=message.channel,
-                text="_<@{}> you just got clim'd!_".format(str(recipient).strip("@"))
+                text="_<@{}> you just got clim'd!_"
+                     .format(str(recipient).strip("@"))
             )
 
-    def notify_message(self, slack_client: SlackClient, message: Message) -> None:
+    def notify_message(self, slack_client: SlackClient,
+                       message: Message) -> None:
         if self.its_clim(message):
             self.clim_em(slack_client, message)
 

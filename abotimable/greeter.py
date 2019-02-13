@@ -23,7 +23,8 @@ from .settings import Settings
 logger = logging.getLogger(__name__)
 settings = Settings()
 
-greeting = "Hello everybody! Hope <!everyone> is having a wonderful and productive day :)"
+greeting = "Hello everybody! Hope <!everyone> is having a wonderful and " \
+           "productive day :)"
 
 
 class GreeterModule:
@@ -42,10 +43,12 @@ class GreeterModule:
                 sc.api_call("chat.postMessage", channel=channel, text=greeting)
                 numhours = random.randint(6, 24)
                 sleeptime = numhours * 3600
-                logger.debug("Greeter sleeping for {} seconds".format(sleeptime))
+                logger.debug("Greeter sleeping for {} seconds"
+                             .format(sleeptime))
                 time.sleep(sleeptime)
 
-    def notify_message(self, slack_client: SlackClient, message: Message) -> None:
+    def notify_message(self, slack_client: SlackClient,
+                       message: Message) -> None:
         if not settings.quiet_entrance:
             self.run_greeter(slack_client, message.channel)
         else:

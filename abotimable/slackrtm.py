@@ -76,7 +76,7 @@ def bot_loop(bot: bot_model.Bot) -> None:
                             daemon=True
                         )
                         t.start()
-                    except:
+                    except Exception:
                         logger.error("Error starting thread")
     else:
         logger.error("Connection Failed")

@@ -6,12 +6,13 @@
     Description: A class that contains global variable settings
 """
 
+
 class Settings:
 
-    annoyance = 0.5  # Annoyance control for abotimable 0 = off; 1 = maximum
-    quiet_entrance = True  # Announce abotimable's entrance; not recommended for hackathons
+    # annoyance control for abotimable (0 = off, 1 = max)
+    annoyance = 0.5
+    # announce abotimable's entrance; not recommended for hackathons
+    quiet_entrance = True
 
     def __init__(self):
         pass
-
-
