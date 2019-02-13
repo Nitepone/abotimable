@@ -7,7 +7,6 @@ from slackclient import SlackClient
 from abotimable import app, slackrtm
 from abotimable.model import bot as bot_model
 
-logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # read in the templates

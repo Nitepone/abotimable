@@ -1,8 +1,17 @@
+import coloredlogs
 import time
 import threading
 import logging
 from . import server
 from . import slackrtm
+
+# install colored logs
+coloredlogs.install(level=logging.DEBUG)
+
+# add a filter to all handlers on the root logger that will only permit
+# abotimable logs to pass through
+for handler in logging.getLogger().handlers:
+    handler.addFilter(logging.Filter('abotimable'))
 
 
 def server_monitor():

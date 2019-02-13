@@ -2,7 +2,6 @@ import pickle
 import shelve
 import time
 import logging
-import coloredlogs
 import json
 import threading
 from slackclient import SlackClient
@@ -20,7 +19,6 @@ from abotimable.songLyrics import SongLyricsModule
 from abotimable.clim import Clim
 from abotimable.ricFlair import RicFlair
 
-coloredlogs.install(level=logging.BASIC_FORMAT)
 logger = logging.getLogger(__name__)
 
 item_types = {

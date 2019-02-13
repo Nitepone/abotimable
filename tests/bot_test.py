@@ -8,8 +8,6 @@ import logging
 import sqlite3
 from abotimable.model import bot as BotModel
 
-logging.basicConfig(level=logging.DEBUG)
-
 # create a new bot
 logging.info("Creating a new bot")
 b = BotModel.Bot(
