@@ -20,7 +20,7 @@ def server_monitor():
     logger.info("Started web server monitor thread")
     while True:
         try:
-            server.app.run(host="0.0.0.0", port=5000)
+            server.app.run(host="0.0.0.0", port=3000)
         except Exception as e:
             logger.error("Server thread died")
             logger.error(e)
