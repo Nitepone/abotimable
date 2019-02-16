@@ -1,9 +1,15 @@
 """
 run all the tests
+
+:author: Elliot Miller
+:docType: reStructuredText
 """
 import logging
+import unittest
+from .test_style import StyleTest
+from .test_import import ImportTest
+from .test_bot import BotTest
+
 logging.basicConfig(level=logging.INFO)
 
-from . import import_test
-
-from . import bot_test
+unittest.main()

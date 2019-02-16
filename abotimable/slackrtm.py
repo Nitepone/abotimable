@@ -2,7 +2,6 @@ import pickle
 import shelve
 import time
 import logging
-import coloredlogs
 import json
 import threading
 from slackclient import SlackClient
@@ -21,7 +20,6 @@ from abotimable.clim import Clim
 from abotimable.ricFlair import RicFlair
 from abotimable.dj import Spotify
 
-coloredlogs.install(level=logging.BASIC_FORMAT)
 logger = logging.getLogger(__name__)
 
 item_types = {
@@ -80,7 +78,7 @@ def bot_loop(bot: bot_model.Bot) -> None:
                             daemon=True
                         )
                         t.start()
-                    except:
+                    except Exception:
                         logger.error("Error starting thread")
     else:
         logger.error("Connection Failed")

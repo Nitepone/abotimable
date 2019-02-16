@@ -29,7 +29,7 @@ class EmotionModule():
 
     def query(self, inputText):
         tone_analysis = self.tone_analyzer.tone(
-            {'text':inputText},
+            {'text': inputText},
             'application/json'
         ).get_result()
 
