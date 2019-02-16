@@ -10,7 +10,7 @@
 class Settings:
 
     # annoyance control for abotimable (0 = off, 1 = max)
-    annoyance = 0.5
+    annoyance = 0.2
     # announce abotimable's entrance; not recommended for hackathons
     quiet_entrance = True
 

@@ -28,12 +28,10 @@ item_types = {
 }
 
 team_bot_modules = [
-    TestModule(),
     RemindMention(),
     GrammarModule(),
     EmotionModule(),
     SuperiorOSModule(),
-    GreeterModule(),
     LMGTFYModule(),
     SongLyricsModule(),
     Clim(),

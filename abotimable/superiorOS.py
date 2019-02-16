@@ -64,7 +64,7 @@ def prepare_counterargument(classification):
     elif classification == "mac-neg":
         counter = "Steve Jobs was a god."
     elif classification == "android-pos":
-        counter = "Fuckin' greenie"
+        counter = "Greenie"
     elif classification == "android-neg":
         counter = "Yeah? How's your screen doing?"
     elif classification == "iphone-pos":

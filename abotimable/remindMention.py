@@ -32,7 +32,7 @@ class RemindMention:
         )
         if create_dm_request['ok'] == True:
             dm_channel_id = create_dm_request['channel']['id']
-            for i in range(0, 10, 1):
+            for i in range(3):
                 send_dm_message = slack_client.api_call(
                     "chat.postMessage",
                     channel=dm_channel_id,

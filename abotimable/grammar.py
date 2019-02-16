@@ -82,7 +82,7 @@ if __name__ == '__main__':
     incoming = "Hey man, you're gonna be late!"
     word = containscommonissue(incoming)
     print(incoming)
-    rand = random.randint(1, 10)
+    rand = random.randint(1, 20)
     if word is not None and rand <= 3:
         outgoing = correctgrammar(word)
         print(outgoing)
