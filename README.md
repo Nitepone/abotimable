@@ -98,7 +98,9 @@ docker build -t abotimable:latest .
 Start the container:
 
 ```bash
-docker run -tip 5000:5000 abotimable
+docker run --mount type=bind,source="$(pwd)/config.ini",target=/app/config.ini \
+        -tip 5000:5000 \
+        abotimable
 ```
 
 ## Testing
