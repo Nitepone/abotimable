@@ -1,8 +1,14 @@
+"""
+Integration with chrisbaudouinjr/spotiserver
+"""
+import logging
 import random
-
 from .model.message import Message
 from slackclient import SlackClient
 import requests
+import configparser
+
+logger = logging.getLogger(__name__)
 
 ACCEPTED = 202
 NOT_ACCEPTED = 406
@@ -48,16 +54,20 @@ need_artist_responses = ["need the artist",
 class Spotify:
 
     def __init__(self):
-        pass
+        config = configparser.RawConfigParser()
+        config.read('config.ini')
+        self.url = config['DJ']['URL']
+        logger.info("DJ module instantiated")
 
     def process_request(self, slack_client: SlackClient, message: Message):
-        spotiserverEnvironment = "http://localhost:3000"
-
-        pieces = message.text.lstrip('!request ').split(', ')
+        bang, args = message.text.split(maxsplit=1)
+        assert "!request" == bang.strip()
+        pieces = list(map(lambda x: x.strip(), args.split(',')))
         if len(pieces) == 2:
             song, artist = pieces
             payload = {'track': song, 'artist': artist, 'listener': message.user}
-            r = requests.get(spotiserverEnvironment, params=payload)
+            r = requests.get(self.url, params=payload)
+            logger.info("Sent request to {}".format(r.url))
 
             if r.status_code == 200:
                 j = r.json()
@@ -81,5 +91,5 @@ class Spotify:
 
     def notify_message(self, slack_client: SlackClient, message: Message) -> None:
         # IMPORTANT: This feature is currently supported by only one Slack workspace
-        if "!request" in message.text and message.channel == "CET04PNSG":
+        if "!request" in message.text:
             self.process_request(slack_client, message)

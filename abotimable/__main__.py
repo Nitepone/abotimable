@@ -5,6 +5,8 @@ import logging
 from . import server
 from . import slackrtm
 
+logger = logging.getLogger('abotimable')
+
 # install colored logs
 coloredlogs.install(level=logging.DEBUG)
 
@@ -15,13 +17,14 @@ for handler in logging.getLogger().handlers:
 
 
 def server_monitor():
+    logger.info("Started web server monitor thread")
     while True:
         try:
             server.app.run(host="0.0.0.0", port=5000)
         except Exception as e:
-            logging.error("Server thread died")
-            logging.error(e)
-        logging.info("Waiting 5 seconds before restarting server thread")
+            logger.error("Server thread died")
+            logger.error(e)
+        logger.info("Waiting 5 seconds before restarting server thread")
         time.sleep(5)
 
 

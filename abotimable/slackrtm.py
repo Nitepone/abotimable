@@ -31,7 +31,7 @@ team_bot_modules = [
     TestModule(),
     RemindMention(),
     GrammarModule(),
-    #EmotionModule(),
+    EmotionModule(),
     SuperiorOSModule(),
     GreeterModule(),
     LMGTFYModule(),
