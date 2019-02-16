@@ -52,24 +52,22 @@ class Spotify:
 
     def process_request(self, slack_client: SlackClient, message: Message):
         spotiserverEnvironment = "http://localhost:3000"
-        if len(message.text.lstrip('!request ').split(', ')) >= 2:
-            song, artist = message.text.lstrip('!request ').split(', ')
+
+        pieces = message.text.lstrip('!request ').split(', ')
+        if len(pieces) == 2:
+            song, artist = pieces
             payload = {'track': song, 'artist': artist, 'listener': message.user}
             r = requests.get(spotiserverEnvironment, params=payload)
-            if r.status_code == ACCEPTED:
+
+            if r.status_code == 200:
+                j = r.json()
                 self.sendMessage(slack_client, message, accepted_responses)
-            elif r.status_code == NOT_ACCEPTED:
-                self.sendMessage(slack_client, message, not_accepted_responses)
-            elif r.status_code == DISABLED:
-                self.sendMessage(slack_client, message, disabled_responses)
-            elif r.status_code == EXPLICIT:
-                self.sendMessage(slack_client, message, explicit_responses)
-            elif r.status_code == NOT_FOUND:
-                self.sendMessage(slack_client, message, not_found_responses)
-            elif r.status_code == ERROR:
-                self.sendMessage(slack_client, message, error_responses)
-        else:
-            self.sendMessage(slack_client, message, need_artist_responses)
+            else:
+                try:
+                    j = r.json()
+                    self.sendMessage(slack_client, message, [j["message"]])
+                except Exception:
+                    self.sendMessage(slack_client, message, ["I can't help you right now.", "Try again later"])
 
     def sendMessage(self, slack_client: SlackClient, message: Message, responseList):
         rand_msg = random.randint(0, len(responseList) - 1)  # Choose a random message from response list
